@@ -1,6 +1,8 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 const webpackUtil = require('./webpack.util');
 
 module.exports = {
@@ -11,8 +13,8 @@ module.exports = {
   //   styles: ['./src/scss/global.scss', './src/scss/page1.scss', './src/scss/page2.scss']
   // },
   entry: {
-    ...webpackUtil.jsEntryPoints,
     ...webpackUtil.scssEntryPoints,
+    ...webpackUtil.jsEntryPoints,
   },  
   output: {
     filename: 'js/[name].bundle.js',
@@ -27,7 +29,7 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.s?css$/,
+        test: /\.scss$/,
         use: [
           MiniCssExtractPlugin.loader,
           "css-loader",
@@ -53,5 +55,19 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].bundle.css',
     }),
-  ]
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'index.html', to: 'index.html' }, // Adjust the source and destination paths as needed
+      ],
+    }),
+  ],
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'), // Specify the static directory
+    },
+    port: 8080,
+    open: true,
+    hot: false,
+  },
+  // watch: true, // Enable watch mode
 };

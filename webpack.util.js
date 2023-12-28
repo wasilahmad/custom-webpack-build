@@ -27,6 +27,10 @@ scssFiles.forEach(file => {
   scssEntryPoints[entryName] = file;
 });
 
+// Create an entry point for the main SCSS file
+// const partialEntryPoints = [path.join(path.join(__dirname, 'src/scss'), '_mainPartials.scss')]
+  
+
 // ================== script Util ==============================
 
 // Function to get JS files in a directory
